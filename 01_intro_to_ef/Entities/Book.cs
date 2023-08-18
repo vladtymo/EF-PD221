@@ -1,4 +1,6 @@
-﻿namespace _01_intro_to_ef
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace _01_intro_to_ef
 {
     // Entities classes
     public class Book
@@ -10,5 +12,6 @@
 
         // ----- Navigation Properties
         public ICollection<Author> Authors { get; set; } = new HashSet<Author>();
+        public Review? Review { get; set; }
     }
 }
