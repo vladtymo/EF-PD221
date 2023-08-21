@@ -15,7 +15,9 @@
         // ----- Navigation Properties
 
         // Relationship Type: Zero or One to Many (0/1...*)
-        public Country? Country { get; set; }
-        public ICollection<Book> Books { get; set; } = new HashSet<Book>();
+        public virtual Country? Country { get; set; }
+        public virtual ICollection<Book> Books { get; set; } = new HashSet<Book>();
+
+      
     }
 }

@@ -6,6 +6,6 @@
         public string Name { get; set; }
 
         // ----- Navigation Properties
-        public ICollection<Author> Authors { get; set; } = new HashSet<Author>();
+        public virtual ICollection<Author> Authors { get; set; } = new HashSet<Author>();
     }
 }

@@ -19,6 +19,9 @@ namespace _01_intro_to_ef
         {
             base.OnConfiguring(optionsBuilder);
 
+            // enable lazy loading
+            //optionsBuilder.UseLazyLoadingProxies();
+
             // Pooling=True;
             string conn = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EFLibraryDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;";
             optionsBuilder.UseSqlServer(conn);

@@ -11,7 +11,12 @@ namespace _01_intro_to_ef
         public string? Description { get; set; }
 
         // ----- Navigation Properties
-        public ICollection<Author> Authors { get; set; } = new HashSet<Author>();
-        public Review? Review { get; set; }
+        public virtual ICollection<Author> Authors { get; set; } = new HashSet<Author>();
+        public virtual Review? Review { get; set; }
+
+        public override string ToString()
+        {
+            return $"[{Id}] - Title: {Title}, {Year}";
+        }
     }
 }

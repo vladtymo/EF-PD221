@@ -18,6 +18,6 @@ namespace _01_intro_to_ef
         public string Summary { get; set; }
 
         // Relationship Type: One to One 1...1 
-        public Book Book { get; set; }
+        public virtual Book Book { get; set; }
     }
 }
