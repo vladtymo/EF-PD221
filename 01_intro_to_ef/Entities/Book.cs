@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace _01_intro_to_ef
 {
@@ -6,6 +7,8 @@ namespace _01_intro_to_ef
     public class Book
     {
         public int Id { get; set; }
+        [MaxLength(200)]    // set string max len
+        [Required]          // set not null
         public string Title { get; set; }
         public int Year { get; set; }
         public string? Description { get; set; }
