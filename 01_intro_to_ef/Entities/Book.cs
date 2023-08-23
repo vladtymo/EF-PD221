@@ -7,8 +7,8 @@ namespace _01_intro_to_ef
     public class Book
     {
         public int Id { get; set; }
-        [MaxLength(200)]    // set string max len
-        [Required]          // set not null
+        //[MaxLength(200)]    // set string max len
+        //[Required]          // set not null
         public string Title { get; set; }
         public int Year { get; set; }
         public string? Description { get; set; }

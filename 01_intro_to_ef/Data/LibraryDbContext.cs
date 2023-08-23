@@ -26,11 +26,39 @@ namespace _01_intro_to_ef
             string conn = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EFLibraryDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;";
             optionsBuilder.UseSqlServer(conn);
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // Fluent API configurations
+            modelBuilder.Entity<Author>().HasKey(x => x.Id).HasName("Writers");
+            modelBuilder.Entity<Author>().Property(x => x.Name).HasMaxLength(200);
+            modelBuilder.Entity<Author>().Property(x => x.Birthdate)
+                                            .HasColumnName("DateOfBirth")
+                                            .IsRequired(false);
+            modelBuilder.Entity<Author>().Ignore(x => x.FullName);
+
+            // Configure Relationships
+            modelBuilder.Entity<Author>().HasOne(x => x.Country)
+                                            .WithMany(x => x.Authors)
+                                            .HasForeignKey(x => x.CountryId)
+                                            .IsRequired(false)
+                                            .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<Author>().HasMany(x => x.Books).WithMany(x => x.Authors);
+
+            // Book
+            modelBuilder.Entity<Book>().Property(x => x.Title).IsRequired(false).HasMaxLength(200);
+            modelBuilder.Entity<Book>().HasOne(x => x.Review)
+                                        .WithOne(x => x.Book)
+                                        .HasForeignKey<Review>(x => x.BookId)
+                                        .IsRequired();
+
+            modelBuilder.Entity<Review>().HasKey(x => x.BookId);
+
+
+            // Seed Data
+            #region Seed
             modelBuilder.Entity<Country>().HasData(new Country[]
             {
                 new Country() { Id = 1, Name = "Ukraine" },
@@ -59,7 +87,9 @@ namespace _01_intro_to_ef
             {
                 new Review() {  BookId = 1, Date = new DateTime(2023, 1, 5), Summary = "Everything is good!"},
             });
+            #endregion
         }
+
         public DbSet<Author> Authors { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Book> Books { get; set; }

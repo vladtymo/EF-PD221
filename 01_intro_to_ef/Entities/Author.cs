@@ -2,7 +2,7 @@
 
 namespace _01_intro_to_ef
 {
-    [Table("Writers")] // set table name in db
+    //[Table("Writers")] // set table name in db
     public class Author
     {
         // Primary Key convention: Id ID id EntityName+Id (AuthorId) 
@@ -10,11 +10,11 @@ namespace _01_intro_to_ef
         public string Name { get; set; }
         public string Surname { get; set; }
 
-        [Column("DateOfBirth")] // set column name in db
+        //[Column("DateOfBirth")] // set column name in db
         public DateTime? Birthdate { get; set; }
         public int? Rating { get; set; }
 
-        [NotMapped] // ignore column in db
+        //[NotMapped] // ignore column in db
         public string FullName => Name + " " + Surname;
 
         // Foreign Key convention: RelatedEntityName+PK
@@ -25,7 +25,5 @@ namespace _01_intro_to_ef
         // Relationship Type: Zero or One to Many (0/1...*)
         public virtual Country? Country { get; set; }
         public virtual ICollection<Book> Books { get; set; } = new HashSet<Book>();
-
-      
     }
 }
