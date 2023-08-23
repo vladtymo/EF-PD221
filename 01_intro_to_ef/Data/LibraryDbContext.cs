@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using _01_intro_to_ef.Data;
+using _01_intro_to_ef.Data.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace _01_intro_to_ef
 {
@@ -30,22 +32,9 @@ namespace _01_intro_to_ef
         {
             base.OnModelCreating(modelBuilder);
 
-            // Fluent API configurations
-            modelBuilder.Entity<Author>().HasKey(x => x.Id).HasName("Writers");
-            modelBuilder.Entity<Author>().Property(x => x.Name).HasMaxLength(200);
-            modelBuilder.Entity<Author>().Property(x => x.Birthdate)
-                                            .HasColumnName("DateOfBirth")
-                                            .IsRequired(false);
-            modelBuilder.Entity<Author>().Ignore(x => x.FullName);
-
-            // Configure Relationships
-            modelBuilder.Entity<Author>().HasOne(x => x.Country)
-                                            .WithMany(x => x.Authors)
-                                            .HasForeignKey(x => x.CountryId)
-                                            .IsRequired(false)
-                                            .OnDelete(DeleteBehavior.ClientSetNull);
-
-            modelBuilder.Entity<Author>().HasMany(x => x.Books).WithMany(x => x.Authors);
+            // -------------------- Fluent API configurations
+            // Author
+            modelBuilder.ApplyConfiguration(new AuthorConfigs());
 
             // Book
             modelBuilder.Entity<Book>().Property(x => x.Title).IsRequired(false).HasMaxLength(200);
@@ -53,41 +42,11 @@ namespace _01_intro_to_ef
                                         .WithOne(x => x.Book)
                                         .HasForeignKey<Review>(x => x.BookId)
                                         .IsRequired();
-
+            // Review
             modelBuilder.Entity<Review>().HasKey(x => x.BookId);
 
-
-            // Seed Data
-            #region Seed
-            modelBuilder.Entity<Country>().HasData(new Country[]
-            {
-                new Country() { Id = 1, Name = "Ukraine" },
-                new Country() { Id = 2, Name = "Italy" },
-                new Country() { Id = 3, Name = "Great Britain" },
-                new Country() { Id = 4, Name = "France" }
-            });
-
-            modelBuilder.Entity<Author>().HasData(new Author[]
-            {
-                new Author() { Id = 1, Name = "Ivan", Surname = "Franko", CountryId = 1, Birthdate = new DateTime(1856, 8, 27)  },
-                new Author() { Id = 2, Name = "Taras", Surname = "Shevchenko", CountryId = 1, Birthdate = new DateTime(1814, 3, 9) },
-            });
-
-            modelBuilder.Entity<Book>().HasData(new Book[]
-            {
-                new Book()
-                {
-                    Id = 1,
-                    Title = "Blue Sky",
-                    Year = 2017
-                }
-            });
-
-            modelBuilder.Entity<Review>().HasData(new Review[]
-            {
-                new Review() {  BookId = 1, Date = new DateTime(2023, 1, 5), Summary = "Everything is good!"},
-            });
-            #endregion
+            // -------------------- Seed Data
+            DbInitializer.SeedData(modelBuilder);
         }
 
         public DbSet<Author> Authors { get; set; }
