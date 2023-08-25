@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using data_access;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace _01_intro_to_ef
@@ -8,6 +9,8 @@ namespace _01_intro_to_ef
         static void Main(string[] args)
         {
             LibraryDbContext db = new();
+
+            
 
             // create new author
             //var author = new Author()
@@ -91,6 +94,14 @@ namespace _01_intro_to_ef
 
             Console.WriteLine($"{author.Country?.Name}");
             Console.WriteLine($"{author.Books.Count}");
+
+            // ----------- Entity State
+            var newA = new Author() { Name = "Bob" /* ... */};
+
+            //db.Authors.Add(newA); // added
+            //db.Entry(newA).State = EntityState.Added;
+
+            //db.SaveChanges(); // insert newA
         }
     }
 }
